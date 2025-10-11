@@ -18,6 +18,16 @@ Templatizer creates new applications in the parent directory (`../`) so that:
 - Each new app gets its own separate directory and git repository
 - You can easily organize multiple projects while keeping templatizer as a standalone tool
 
+### Current Status: ✅ FULLY WORKING
+
+The templatizer has been thoroughly tested and debugged. All major issues have been resolved:
+
+- ✅ **Authentication System**: Complete user authentication with proper class methods
+- ✅ **Routing**: Fixed all navigation links and route configurations
+- ✅ **Database**: Smart conflict detection and migration handling
+- ✅ **UI/UX**: Modern Tailwind CSS with responsive design
+- ✅ **Testing**: Comprehensive test framework included
+
 This template creates a modern Rails 8 application with:
 
 - **Authentication System**: Complete user authentication with sessions, password reset, and email confirmation
@@ -285,6 +295,49 @@ templatizer/
 ├── examples/            # Usage examples
 └── .github/workflows/   # CI/CD pipelines
 ```
+
+## 🔧 Troubleshooting
+
+### Common Issues & Solutions
+
+#### 1. Authentication Errors
+**Problem**: `NoMethodError: undefined method 'unauthenticated_access_only'`
+**Solution**: This has been fixed in the template. If you encounter this:
+```bash
+# Restart your Rails server
+# The template now properly defines this as a class method
+```
+
+#### 2. Routing Errors
+**Problem**: `ActionController::RoutingError: No route matches [GET] "/sign_up"`
+**Solution**: Use the correct routes:
+- Sign up form: `/sign_up/new` (not `/sign_up`)
+- Sign in form: `/session/new` (not `/session`)
+
+#### 3. Database Conflicts
+**Problem**: `PG::DuplicateTable: ERROR: relation "users" already exists`
+**Solution**: The template now includes smart conflict detection:
+- Automatically detects existing databases
+- Prompts for overwrite confirmation
+- Performs clean database reset when needed
+
+#### 4. Migration Errors
+**Problem**: `ActiveRecord::DuplicateMigrationNameError`
+**Solution**: Fixed in template - now uses proper migration handling:
+- Finds generated migrations automatically
+- Updates content without creating duplicates
+- Handles index creation intelligently
+
+#### 5. Tailwind CSS Issues
+**Problem**: `Specified input file ./app/assets/tailwind/application.css does not exist`
+**Solution**: Template now creates the required input file automatically
+
+### Getting Help
+
+1. **Check the logs**: Look at your Rails server output for specific errors
+2. **Test the sample app**: Run `./scripts/test-sample-app.sh` to verify functionality
+3. **Debug mode**: Use `./scripts/debug-template.sh rails-modern detailed` for detailed output
+4. **Restart server**: Many issues are resolved by restarting the Rails server
 
 ## 📚 Documentation
 
