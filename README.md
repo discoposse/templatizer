@@ -63,6 +63,31 @@ bin/dev
 ./scripts/debug-template.sh rails-modern detailed
 ```
 
+### Sample Application
+
+Templatizer includes a sample application to demonstrate all features:
+
+```bash
+# Test the sample app
+./scripts/test-sample-app.sh
+
+# Navigate to the sample app
+cd sample-app
+
+# Start the development server
+bin/dev
+
+# Visit the application
+open http://localhost:3000
+```
+
+The sample app includes:
+- ✅ **Complete Authentication**: User registration, login, logout
+- ✅ **Modern UI**: Tailwind CSS with responsive design
+- ✅ **Database**: PostgreSQL with proper migrations
+- ✅ **Hotwire**: Turbo and Stimulus integration
+- ✅ **Testing**: Comprehensive test coverage
+
 ## What Gets Created
 
 ### Core Features

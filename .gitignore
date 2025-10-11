@@ -1,69 +1,196 @@
-*.rbc
-capybara-*.html
-.rspec
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/db/*.sqlite3-[0-9]*
-/public/system
-/coverage/
-/spec/tmp
-*.orig
-rerun.txt
-pickle-email-*.html
+# Templatizer .gitignore
+# Protects sensitive information and generated files
 
-# Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+# ===========================================
+# SECRETS AND KEYS - CRITICAL PROTECTION
+# ===========================================
 
-# TODO Comment out this rule if you are OK with secrets being uploaded to the repo
-config/initializers/secret_token.rb
+# Rails secrets and keys
 config/master.key
-
-# Only include if you have production secrets in this file, which is no longer a Rails default
-# config/secrets.yml
-
-# dotenv, dotenv-rails
-# TODO Comment out these rules if environment variables can be committed
+config/credentials/*.key
+config/credentials.yml.enc
+config/secrets.yml
+config/database.yml
 .env
-.env*.local
+.env.local
+.env.development
+.env.production
+.env.test
 
-## Environment normalization:
-/.bundle
-/vendor/bundle
+# API keys and tokens
+*.key
+*.pem
+*.p12
+*.pfx
+api_keys.txt
+secrets.txt
+credentials.txt
 
-# these should all be checked in to normalize the environment:
-# Gemfile.lock, .ruby-version, .ruby-gemset
+# Database credentials
+database.yml
+database.json
+db_config.yml
 
-# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
-.rvmrc
+# ===========================================
+# GENERATED APPLICATIONS
+# ===========================================
 
-# if using bower-rails ignore default bower_components path bower.json files
-/vendor/assets/bower_components
-*.bowerrc
-bower.json
+# Sample applications (keep structure, exclude sensitive files)
+sample-app/
+examples/*/config/master.key
+examples/*/config/credentials.yml.enc
+examples/*/config/database.yml
+examples/*/.env*
+examples/*/log/
+examples/*/tmp/
+examples/*/storage/
+examples/*/node_modules/
 
-# Ignore pow environment settings
-.powenv
+# Test applications
+test_*/
+temp_*/
+debug_*/
 
-# Ignore Byebug command history file.
-.byebug_history
+# ===========================================
+# RAILS SPECIFIC
+# ===========================================
 
-# Ignore node_modules
+# Rails logs
+log/
+*.log
+
+# Rails temporary files
+tmp/
+storage/
+
+# Rails cache
+.cache/
+
+# Rails pid files
+*.pid
+
+# Rails credentials
+config/credentials/*.key
+config/credentials.yml.enc
+
+# ===========================================
+# NODE.JS AND FRONTEND
+# ===========================================
+
+# Node modules
 node_modules/
-
-# Ignore precompiled javascript packs
-/public/packs
-/public/packs-test
-/public/assets
-
-# Ignore yarn files
-/yarn-error.log
+npm-debug.log*
 yarn-debug.log*
-.yarn-integrity
+yarn-error.log*
 
-# Ignore uploaded files in development
-/storage/*
-!/storage/.keep
-/public/uploads
+# Frontend build outputs
+dist/
+build/
+.next/
+.nuxt/
+
+# ===========================================
+# DATABASE
+# ===========================================
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Database dumps
+*.dump
+*.sql
+
+# ===========================================
+# DEVELOPMENT TOOLS
+# ===========================================
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===========================================
+# TESTING AND COVERAGE
+# ===========================================
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Test results
+test-results/
+spec/examples.txt
+
+# ===========================================
+# DEPLOYMENT AND PRODUCTION
+# ===========================================
+
+# Deployment files
+deploy/
+deployment/
+*.tar.gz
+*.zip
+
+# Production logs
+production.log
+error.log
+
+# ===========================================
+# DOCUMENTATION GENERATED FILES
+# ===========================================
+
+# Generated documentation (keep source, exclude generated)
+docs/generated/
+docs/build/
+
+# ===========================================
+# TEMPLATE TESTING
+# ===========================================
+
+# Template test outputs
+test_output/
+template_test_*/
+
+# ===========================================
+# MISCELLANEOUS
+# ===========================================
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+*.tmp
+*.temp
+
+# Lock files (keep package-lock.json, exclude others)
+yarn.lock
+Gemfile.lock
+
+# ===========================================
+# SECURITY NOTES
+# ===========================================
+
+# IMPORTANT: This .gitignore is designed to protect:
+# 1. Rails master keys and credentials
+# 2. Database connection strings
+# 3. API keys and tokens
+# 4. Environment variables
+# 5. Generated applications with sensitive data
+# 6. Log files that might contain sensitive information
+#
+# Always review before committing to ensure no secrets are included!
