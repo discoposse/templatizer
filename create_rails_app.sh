@@ -42,15 +42,18 @@ APP_NAME_CLASS=$(echo $APP_NAME | sed 's/\([a-z0-9]\)\([A-Z]\)/\1_\2/g' | tr '[:
 
 print_status "Creating Rails app: $APP_NAME"
 
+# Define the target directory (parent directory)
+TARGET_DIR="../$APP_NAME_LOWER"
+
 # Check if directory already exists
-if [ -d "$APP_NAME_LOWER" ]; then
-    print_error "Directory $APP_NAME_LOWER already exists!"
+if [ -d "$TARGET_DIR" ]; then
+    print_error "Directory $TARGET_DIR already exists!"
     exit 1
 fi
 
-# Create Rails app with specific options
-print_status "Generating Rails application..."
-rails new $APP_NAME_LOWER \
+# Create Rails app with specific options in parent directory
+print_status "Generating Rails application in $TARGET_DIR..."
+rails new $TARGET_DIR \
     --database=postgresql \
     --css=tailwind \
     --javascript=importmap \
@@ -59,7 +62,7 @@ rails new $APP_NAME_LOWER \
     --skip-system-test \
     --skip-bundle
 
-cd $APP_NAME_LOWER
+cd $TARGET_DIR
 
 print_status "Installing additional gems..."
 
@@ -674,7 +677,7 @@ EOF
 
 print_success "Rails app '$APP_NAME' created successfully!"
 print_status "Next steps:"
-echo "  1. cd $APP_NAME_LOWER"
+echo "  1. cd ../$APP_NAME_LOWER"
 echo "  2. bin/dev"
 echo "  3. Visit http://localhost:3000"
 

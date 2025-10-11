@@ -1,5 +1,14 @@
 # Rails Modern App Template
 
+This templatizer creates modern Rails 8 applications in a separate directory, allowing you to keep the templatizer itself version controlled while creating independent Rails applications.
+
+## How It Works
+
+The templatizer creates new Rails applications in the parent directory (`../`) so that:
+- The templatizer itself can be version controlled independently
+- Each new Rails app gets its own separate directory and git repository
+- You can easily organize multiple projects while keeping the templatizer as a standalone tool
+
 This template creates a modern Rails 8 application with:
 
 - **Authentication System**: Complete user authentication with sessions, password reset, and email confirmation
@@ -16,11 +25,11 @@ This template creates a modern Rails 8 application with:
 # Make the script executable
 chmod +x create_rails_app.sh
 
-# Create a new Rails app
+# Create a new Rails app (will be created in parent directory)
 ./create_rails_app.sh myapp
 
 # Navigate to your new app
-cd myapp
+cd ../myapp
 
 # Start the development server
 bin/dev

@@ -40,7 +40,7 @@ chmod +x create_rails_app.sh
 
 1. **Start Development**
    ```bash
-   cd myapp
+   cd ../myapp
    bin/dev
    ```
 
