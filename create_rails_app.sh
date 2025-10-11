@@ -169,11 +169,11 @@ module Authentication
     def require_admin_access(**options)
       before_action :require_admin, **options
     end
-  end
 
-  def unauthenticated_access_only(**options)
-    allow_unauthenticated_access(**options)
-    before_action -> { redirect_to root_path if authenticated? }, **options
+    def unauthenticated_access_only(**options)
+      allow_unauthenticated_access(**options)
+      before_action -> { redirect_to root_path if authenticated? }, **options
+    end
   end
 
   private
@@ -404,7 +404,7 @@ cat > app/views/layouts/application.html.erb << 'EOF'
               <%= button_to "Sign out", session_path, method: :delete, class: "bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
             <% else %>
               <%= link_to "Sign in", new_session_path, class: "text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" %>
-              <%= link_to "Sign up", sign_up_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
+              <%= link_to "Sign up", new_sign_up_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
             <% end %>
           </div>
         </div>
@@ -489,7 +489,7 @@ cat > app/views/home/index.html.erb << 'EOF'
               </p>
               <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div class="rounded-md shadow">
-                  <%= link_to "Get started", sign_up_path, class: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10 transition-colors" %>
+                  <%= link_to "Get started", new_sign_up_path, class: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10 transition-colors" %>
                 </div>
                 <div class="mt-3 sm:mt-0 sm:ml-3">
                   <%= link_to "Sign in", new_session_path, class: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10 transition-colors" %>
@@ -518,7 +518,7 @@ cat > app/views/sessions/new.html.erb << 'EOF'
     <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
     <p class="mt-2 text-center text-sm text-gray-600">
       Or
-      <%= link_to "create a new account", sign_up_path, class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+      <%= link_to "create a new account", new_sign_up_path, class: "font-medium text-indigo-600 hover:text-indigo-500" %>
     </p>
   </div>
 
@@ -638,8 +638,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   root "home#index"
 
-  resource :session
-  resource :sign_up
+  resource :session, only: [:new, :create, :destroy]
+  resource :sign_up, only: [:new, :create]
 end
 EOF
 

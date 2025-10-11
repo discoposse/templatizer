@@ -169,11 +169,11 @@ module Authentication
     def require_admin_access(**options)
       before_action :require_admin, **options
     end
-  end
 
-  def unauthenticated_access_only(**options)
-    allow_unauthenticated_access(**options)
-    before_action -> { redirect_to root_path if authenticated? }, **options
+    def unauthenticated_access_only(**options)
+      allow_unauthenticated_access(**options)
+      before_action -> { redirect_to root_path if authenticated? }, **options
+    end
   end
 
   private
