@@ -1,0 +1,42 @@
+{
+  "name": "Rails Modern App",
+  "description": "A modern Rails 8 application with authentication, Tailwind CSS, and Hotwire",
+  "version": "1.0.0",
+  "author": "Templatizer Team",
+  "framework": "rails",
+  "framework_version": "8.0",
+  "dependencies": {
+    "ruby": ">= 3.1.0",
+    "rails": ">= 8.0.0",
+    "postgresql": ">= 14.0",
+    "node": ">= 18.0"
+  },
+  "features": [
+    "authentication",
+    "tailwind-css",
+    "hotwire",
+    "postgresql",
+    "modern-ui",
+    "pwa-ready"
+  ],
+  "files": {
+    "create_script": "create_rails_app.sh",
+    "config_files": [
+      "application.rb",
+      "database.yml",
+      "tailwind.config.js"
+    ]
+  },
+  "test_commands": [
+    "rails db:migrate",
+    "rails tailwindcss:build",
+    "rails server -p 3000"
+  ],
+  "validation_checks": [
+    "database_connection",
+    "migration_success",
+    "tailwind_compilation",
+    "authentication_models",
+    "routes_configuration"
+  ]
+}

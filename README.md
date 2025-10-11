@@ -1,13 +1,22 @@
-# Rails Modern App Template
+# 🚀 Templatizer
 
-This templatizer creates modern Rails 8 applications in a separate directory, allowing you to keep the templatizer itself version controlled while creating independent Rails applications.
+A powerful, open-source template generator for creating modern web applications with pre-configured setups. Templatizer allows you to quickly scaffold applications with best practices, authentication, modern UI frameworks, and more.
 
-## How It Works
+## ✨ Features
 
-The templatizer creates new Rails applications in the parent directory (`../`) so that:
+- 🎯 **Multiple Templates**: Rails, React, Vue.js, and more
+- 🔧 **Smart Conflict Detection**: Handles existing directories and databases
+- 🧪 **Comprehensive Testing**: Built-in testing framework for templates
+- 📚 **Rich Documentation**: Detailed guides and troubleshooting
+- 🤝 **Community Driven**: Open source with contribution guidelines
+- ⚡ **Fast Setup**: Get from zero to running app in minutes
+
+## 🎯 How It Works
+
+Templatizer creates new applications in the parent directory (`../`) so that:
 - The templatizer itself can be version controlled independently
-- Each new Rails app gets its own separate directory and git repository
-- You can easily organize multiple projects while keeping the templatizer as a standalone tool
+- Each new app gets its own separate directory and git repository
+- You can easily organize multiple projects while keeping templatizer as a standalone tool
 
 This template creates a modern Rails 8 application with:
 
@@ -19,20 +28,39 @@ This template creates a modern Rails 8 application with:
 - **Admin Features**: Role-based access control
 - **PWA Ready**: Progressive Web App capabilities
 
-## Quick Start
+## 🚀 Quick Start
+
+### Using a Template
 
 ```bash
-# Make the script executable
-chmod +x create_rails_app.sh
+# Navigate to templatizer directory
+cd templatizer
 
-# Create a new Rails app (will be created in parent directory)
-./create_rails_app.sh myapp
+# List available templates
+ls templates/
+
+# Use a template (e.g., Rails Modern)
+chmod +x templates/rails-modern/create_rails_app.sh
+./templates/rails-modern/create_rails_app.sh myapp
 
 # Navigate to your new app
 cd ../myapp
 
 # Start the development server
 bin/dev
+```
+
+### Testing Templates
+
+```bash
+# Test a specific template
+./scripts/test-template.sh rails-modern
+
+# Run all tests
+./scripts/run-tests.sh
+
+# Debug a template
+./scripts/debug-template.sh rails-modern detailed
 ```
 
 ## What Gets Created
@@ -188,6 +216,74 @@ bin/kamal deploy
 - Progressive Web App capabilities
 - Responsive design for all screen sizes
 
-## License
+## 🤝 Contributing
 
-This template is provided as-is for creating modern Rails applications.
+Templatizer is an open-source project! We welcome contributions:
+
+### Adding New Templates
+
+1. **Create template directory**: `mkdir templates/your-template-name`
+2. **Add configuration**: Create `template.json` with metadata
+3. **Create script**: Build your template creation script
+4. **Test thoroughly**: Use our testing framework
+5. **Submit PR**: Follow our contribution guidelines
+
+### Development
+
+```bash
+# Clone the repository
+git clone https://github.com/your-org/templatizer.git
+cd templatizer
+
+# Run tests
+./scripts/run-tests.sh
+
+# Debug templates
+./scripts/debug-template.sh template-name detailed
+
+# Generate documentation
+./scripts/generate-docs.sh
+```
+
+### Project Structure
+
+```
+templatizer/
+├── templates/           # Template definitions
+│   ├── rails-modern/    # Rails Modern template
+│   └── your-template/   # Your custom template
+├── scripts/             # Testing and utility scripts
+│   ├── test-template.sh # Template testing
+│   ├── debug-template.sh # Debugging tools
+│   └── run-tests.sh     # Test runner
+├── docs/               # Generated documentation
+├── examples/            # Usage examples
+└── .github/workflows/   # CI/CD pipelines
+```
+
+## 📚 Documentation
+
+- **[Templates](docs/TEMPLATES.md)**: Available templates
+- **[API](docs/API.md)**: Template development API
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)**: Common issues and solutions
+- **[Contributing](CONTRIBUTING.md)**: Contribution guidelines
+
+## 🧪 Testing
+
+Templatizer includes a comprehensive testing framework:
+
+- **Template Validation**: Ensures templates work correctly
+- **Conflict Detection**: Tests directory and database handling
+- **Feature Validation**: Verifies all template features
+- **CI/CD Pipeline**: Automated testing on multiple platforms
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Rails team for the amazing framework
+- Tailwind CSS for beautiful styling
+- Hotwire for modern JavaScript
+- All contributors who make this project better

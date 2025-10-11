@@ -1,0 +1,31 @@
+{
+  "name": "templatizer",
+  "version": "1.0.0",
+  "description": "A powerful template generator for creating modern web applications with pre-configured setups",
+  "main": "index.js",
+  "scripts": {
+    "test": "bash scripts/run-tests.sh",
+    "test:template": "bash scripts/test-template.sh",
+    "validate": "bash scripts/validate-templates.sh",
+    "lint": "bash scripts/lint-templates.sh",
+    "docs": "bash scripts/generate-docs.sh"
+  },
+  "keywords": [
+    "template",
+    "generator",
+    "rails",
+    "web-app",
+    "boilerplate",
+    "scaffolding"
+  ],
+  "author": "Templatizer Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/templatizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/templatizer/issues"
+  },
+  "homepage": "https://github.com/your-org/templatizer#readme"
+}
