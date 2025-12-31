@@ -245,21 +245,79 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  validates :first_name, :last_name, presence: true
-  validates :password, length: { minimum: 8 }, if: -> { new_record? || !password.nil? }
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, allow_nil: true, length: { minimum: 8 }
+  validates :first_name, presence: true, on: :update_profile
+  validates :last_name, presence: true, on: :update_profile
 
-  attr_readonly :admin
+  generates_token_for :password_reset, expires_in: 20.minutes do
+    password_digest&.last(10)
+  end
+
+  generates_token_for :email_verification, expires_in: 2.days do
+    email_address_before_last_save
+  end
+
+  generates_token_for :magic_link, expires_in: 5.minutes
+
+  before_validation :normalize_email
+
+  # Scopes
+  scope :email_confirmed, -> { where.not(email_confirmed_at: nil) }
+  scope :email_unconfirmed, -> { where(email_confirmed_at: nil) }
+
+  # Compatibility method for password reset tokens
+  def self.find_by_password_reset_token!(token)
+    find_by_token_for(:password_reset, token) || raise(ActiveRecord::RecordNotFound)
+  end
+
+  def admin?
+    admin
+  end
+
+  def subscriber?
+    return false unless has_attribute?(:subscriber)
+    self[:subscriber] || false
+  end
+
+  def profile_complete?
+    first_name.present? && last_name.present?
+  end
+
+  def email_confirmed?
+    email_confirmed_at.present?
+  end
+
+  def confirm_email!
+    update_column(:email_confirmed_at, Time.current) unless email_confirmed?
+  end
+
+  def send_confirmation_email
+    # Use deliver_now in development for immediate email delivery
+    # deliver_later uses background jobs which may not be running
+    if Rails.env.development?
+      EmailConfirmationsMailer.confirmation_email(self).deliver_now
+    else
+      EmailConfirmationsMailer.confirmation_email(self).deliver_later
+    end
+  end
 
   def full_name
-    "#{first_name} #{last_name}"
+    if first_name.present? && last_name.present?
+      "#{first_name} #{last_name}".strip
+    elsif first_name.present?
+      first_name
+    elsif last_name.present?
+      last_name
+    else
+      email_address.split("@").first.humanize
+    end
   end
 
-  def generate_token_for(purpose)
-    signed_id expires_in: 1.hour, purpose: purpose
-  end
+  private
 
-  def self.find_by_password_reset_token!(token)
-    find_signed!(token, purpose: :password_reset)
+  def normalize_email
+    self.email_address = email_address.downcase.strip if email_address.present?
   end
 end
 EOF
@@ -299,26 +357,35 @@ EOF
 # Sessions Controller
 cat > app/controllers/sessions_controller.rb << 'EOF'
 class SessionsController < ApplicationController
-  allow_unauthenticated_access only: [:new, :create]
-  unauthenticated_access_only only: [:new, :create]
+  layout "login"
+  allow_unauthenticated_access only: [ :new, :create ]
 
   def new
+    @user = User.new
   end
 
   def create
-    user = User.find_by(email_address: params[:email_address])
-    if user&.authenticate(params[:password])
-      start_new_session_for(user)
-      redirect_to after_authentication_url, notice: "Signed in successfully."
+    @user = User.find_by(email_address: params[:email_address])
+
+    unless @user&.email_confirmed?
+      flash.now[:alert] = "Please confirm your email address before signing in."
+      flash.now[:notice] = "Need to resend? #{helpers.link_to('Click here', new_email_confirmation_path, class: 'underline')}".html_safe
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    if @user&.authenticate(params[:password])
+      start_new_session_for(@user)
+      redirect_to after_authentication_url, notice: "Signed in successfully"
     else
-      flash.now[:alert] = "Invalid email or password."
+      flash.now[:alert] = "Invalid email or password"
       render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
     terminate_session
-    redirect_to root_path, notice: "Signed out successfully."
+    redirect_to sign_in_path, notice: "Signed out successfully"
   end
 end
 EOF
@@ -326,8 +393,8 @@ EOF
 # Sign Ups Controller
 cat > app/controllers/sign_ups_controller.rb << 'EOF'
 class SignUpsController < ApplicationController
-  allow_unauthenticated_access only: [:new, :create]
-  unauthenticated_access_only only: [:new, :create]
+  layout "login"
+  allow_unauthenticated_access only: [ :new, :create ]
 
   def new
     @user = User.new
@@ -336,8 +403,9 @@ class SignUpsController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      start_new_session_for(@user)
-      redirect_to root_path, notice: "Welcome! You have signed up successfully."
+      @user.send_confirmation_email
+      redirect_to new_email_confirmation_path,
+        notice: "Welcome! Please check your email to confirm your account before signing in."
     else
       render :new, status: :unprocessable_entity
     end
@@ -635,11 +703,32 @@ EOF
 print_status "Setting up routes..."
 cat > config/routes.rb << 'EOF'
 Rails.application.routes.draw do
+  # Development email viewer - view all sent emails at /letter_opener
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
   root "home#index"
 
-  resource :session
-  resource :sign_up
+  # Authentication routes
+  get "sign_up", to: "sign_ups#new"
+  post "sign_up", to: "sign_ups#create"
+  get "sign_in", to: "sessions#new"
+  post "sign_in", to: "sessions#create"
+  delete "logout", to: "sessions#destroy"
+
+  # Password reset
+  get "password/reset", to: "password_resets#new"
+  post "password/reset", to: "password_resets#create"
+  get "password/reset/edit", to: "password_resets#edit"
+  patch "password/reset/edit", to: "password_resets#update"
+
+  # Email confirmation routes
+  resources :email_confirmations, only: [ :show, :new, :create ], param: :token
+
+  # Magic link routes
+  resources :magic_links, only: [ :new, :create, :show ], param: :token
 end
 EOF
 

@@ -1,19 +1,21 @@
 # 🚀 Templatizer
 
-A powerful, open-source template generator for creating modern web applications with pre-configured setups. Templatizer allows you to quickly scaffold applications with best practices, authentication, modern UI frameworks, and more.
+A powerful Rails application template generator for creating modern Rails 8 applications with pre-configured authentication, modern UI, and best practices. Templatizer allows you to quickly scaffold production-ready Rails applications with everything you need to get started.
 
 ## ✨ Features
 
-- 🎯 **Multiple Templates**: Rails, React, Vue.js, and more
-- 🔧 **Smart Conflict Detection**: Handles existing directories and databases
+- 🎯 **Rails 8.1 Template**: Modern Rails application with latest features
+- 🔐 **Complete Authentication**: User registration, login, password reset, email confirmation, and magic links
+- 🎨 **Modern UI**: Tailwind CSS with responsive design and beautiful components
+- ⚡ **Hotwire**: Turbo and Stimulus for modern JavaScript interactions
+- 🔧 **Smart Conflict Detection**: Handles existing directories and databases intelligently
 - 🧪 **Comprehensive Testing**: Built-in testing framework for templates
 - 📚 **Rich Documentation**: Detailed guides and troubleshooting
-- 🤝 **Community Driven**: Open source with contribution guidelines
 - ⚡ **Fast Setup**: Get from zero to running app in minutes
 
 ## 🎯 How It Works
 
-Templatizer creates new applications in the parent directory (`../`) so that:
+Templatizer creates new Rails applications in the parent directory (`../`) so that:
 - The templatizer itself can be version controlled independently
 - Each new app gets its own separate directory and git repository
 - You can easily organize multiple projects while keeping templatizer as a standalone tool
@@ -22,43 +24,51 @@ Templatizer creates new applications in the parent directory (`../`) so that:
 
 The templatizer has been thoroughly tested and debugged. All major issues have been resolved:
 
-- ✅ **Authentication System**: Complete user authentication with proper class methods
+- ✅ **Authentication System**: Complete user authentication with email confirmation, password reset, and magic links
 - ✅ **Routing**: Fixed all navigation links and route configurations
 - ✅ **Database**: Smart conflict detection and migration handling
-- ✅ **UI/UX**: Modern Tailwind CSS with responsive design
+- ✅ **UI/UX**: Modern Tailwind CSS with responsive design and consistent styling
 - ✅ **Testing**: Comprehensive test framework included
 
-This template creates a modern Rails 8 application with:
+This template creates a modern Rails 8.1 application with:
 
-- **Authentication System**: Complete user authentication with sessions, password reset, and email confirmation
+- **Authentication System**: Complete user authentication with sessions, password reset, email confirmation, and magic links
 - **Modern UI**: Tailwind CSS with responsive design and beautiful components
 - **Hotwire**: Turbo and Stimulus for modern JavaScript interactions
 - **Database**: PostgreSQL with proper migrations
 - **Security**: Secure password handling, CSRF protection, and modern browser requirements
 - **Admin Features**: Role-based access control
 - **PWA Ready**: Progressive Web App capabilities
+- **Email Support**: Letter opener for development, ready for production mailers
 
 ## 🚀 Quick Start
 
-### Using a Template
+### Using the Template
 
 ```bash
 # Navigate to templatizer directory
 cd templatizer
 
-# List available templates
-ls templates/
-
-# Use a template (e.g., Rails Modern)
+# Use the Rails Modern template
 chmod +x templates/rails-modern/create_rails_app.sh
 ./templates/rails-modern/create_rails_app.sh myapp
 
 # Navigate to your new app
 cd ../myapp
 
+# Install dependencies
+bundle install
+yarn install
+
+# Set up the database
+bin/rails db:create
+bin/rails db:migrate
+
 # Start the development server
 bin/dev
 ```
+
+Visit `http://localhost:3000` to see your new application!
 
 ### Testing Templates
 
@@ -73,61 +83,35 @@ bin/dev
 ./scripts/debug-template.sh rails-modern detailed
 ```
 
-### Sample Application
-
-Templatizer includes a sample application to demonstrate all features:
-
-```bash
-# Test the sample app
-./scripts/test-sample-app.sh
-
-# Navigate to the sample app
-cd sample-app
-
-# Start the development server
-bin/dev
-
-# Visit the application
-open http://localhost:3000
-```
-
-The sample app includes:
-- ✅ **Complete Authentication**: User registration, login, logout
-- ✅ **Modern UI**: Tailwind CSS with responsive design
-- ✅ **Database**: PostgreSQL with proper migrations
-- ✅ **Hotwire**: Turbo and Stimulus integration
-- ✅ **Testing**: Comprehensive test coverage
-
 ## What Gets Created
 
 ### Core Features
 - ✅ User authentication (sign up, sign in, sign out)
-- ✅ Password reset with email tokens
+- ✅ Password reset with secure email tokens
 - ✅ Email confirmation system
-- ✅ User profiles and settings
+- ✅ Magic link authentication
+- ✅ Session management with 30-day expiration
 - ✅ Admin role management
-- ✅ Session management with security
+- ✅ Secure cookie-based sessions
 
 ### UI Components
 - ✅ Modern landing page with hero section
 - ✅ Responsive navigation with user menu
 - ✅ Beautiful form styling with Tailwind CSS
+- ✅ Consistent login/signup page styling
 - ✅ Flash message system
-- ✅ Modal dialogs for confirmations
-- ✅ Interactive buttons and components
+- ✅ Error handling and validation displays
 
 ### JavaScript Features
 - ✅ Stimulus controllers for interactivity
 - ✅ Turbo for seamless page transitions
 - ✅ Form handling with validation
-- ✅ Modal management
-- ✅ Delete confirmations
+- ✅ Modern browser requirements
 
 ### Database Schema
 - ✅ Users table with secure authentication
 - ✅ Sessions table for session management
-- ✅ Password reset tokens
-- ✅ Email confirmation tokens
+- ✅ Email confirmation support
 - ✅ Admin role support
 
 ## File Structure
@@ -136,33 +120,39 @@ The sample app includes:
 app/
 ├── controllers/
 │   ├── application_controller.rb
-│   ├── concerns/authentication.rb
+│   ├── concerns/
+│   │   └── authentication.rb
 │   ├── sessions_controller.rb
 │   ├── sign_ups_controller.rb
-│   ├── passwords_controller.rb
-│   └── settings/
+│   ├── password_resets_controller.rb
+│   ├── email_confirmations_controller.rb
+│   └── magic_links_controller.rb
 ├── models/
 │   ├── user.rb
-│   └── session.rb
+│   ├── session.rb
+│   └── current.rb
 ├── views/
-│   ├── layouts/application.html.erb
+│   ├── layouts/
+│   │   ├── application.html.erb
+│   │   └── login.html.erb
 │   ├── home/
 │   ├── sessions/
 │   ├── sign_ups/
-│   ├── passwords/
-│   └── settings/
-├── javascript/
-│   ├── application.js
-│   └── controllers/
-└── assets/
-    └── stylesheets/
-        └── application.tailwind.css
+│   ├── password_resets/
+│   └── email_confirmations/
+├── mailers/
+│   ├── application_mailer.rb
+│   ├── user_mailer.rb
+│   ├── passwords_mailer.rb
+│   └── email_confirmations_mailer.rb
+└── helpers/
+    └── application_helper.rb
 ```
 
 ## Configuration Files
 
-- `Gemfile` - All necessary gems including Rails 8, Tailwind, Hotwire
-- `config/routes.rb` - Complete routing setup
+- `Gemfile` - All necessary gems including Rails 8.1, Tailwind, Hotwire
+- `config/routes.rb` - Complete routing setup with authentication routes
 - `config/application.rb` - Rails configuration
 - `config/database.yml` - PostgreSQL configuration
 - `config/tailwind.config.js` - Tailwind CSS configuration
@@ -171,14 +161,14 @@ app/
 ## Dependencies
 
 ### Required System Dependencies
-- Ruby 3.1+
-- Rails 8.0+
-- PostgreSQL
-- Node.js (for Tailwind CSS)
+- Ruby 3.1+ (tested with 3.4.8)
+- Rails 8.1+
+- PostgreSQL 14+
+- Node.js 18+ (for Tailwind CSS)
 - Git
 
 ### Gems Included
-- `rails` - Rails framework
+- `rails` - Rails framework (8.1+)
 - `pg` - PostgreSQL adapter
 - `bcrypt` - Password hashing
 - `tailwindcss-rails` - Tailwind CSS integration
@@ -188,12 +178,15 @@ app/
 - `solid_cache` - Database-backed cache
 - `solid_queue` - Database-backed job queue
 - `solid_cable` - Database-backed Action Cable
+- `letter_opener` - Development email preview
+- `letter_opener_web` - Web interface for email preview
+- `kaminari` - Pagination
 
 ## Customization
 
 ### Branding
 1. Update the app name in `config/application.rb`
-2. Replace the logo in `app/assets/images/`
+2. Replace the logo in views
 3. Update colors in `config/tailwind.config.js`
 4. Modify the landing page content in `app/views/home/index.html.erb`
 
@@ -202,7 +195,7 @@ app/
 2. Create controllers in `app/controllers/`
 3. Add routes in `config/routes.rb`
 4. Create views in `app/views/`
-4. Add Stimulus controllers in `app/javascript/controllers/`
+5. Add Stimulus controllers in `app/javascript/controllers/`
 
 ### Styling
 1. Modify `app/assets/stylesheets/application.tailwind.css`
@@ -225,6 +218,17 @@ bin/rubocop
 bin/brakeman
 ```
 
+## Email Development
+
+In development, emails are automatically opened in your browser using Letter Opener Web:
+
+```bash
+# Visit the email viewer
+open http://localhost:3000/letter_opener
+```
+
+All sent emails (password resets, confirmations, etc.) will appear here for easy testing.
+
 ## Deployment
 
 The template includes Kamal deployment configuration:
@@ -238,12 +242,14 @@ bin/kamal deploy
 
 - ✅ Secure password hashing with bcrypt
 - ✅ CSRF protection enabled
-- ✅ Secure session management
-- ✅ Password reset with signed tokens
-- ✅ Email confirmation system
+- ✅ Secure session management with signed cookies
+- ✅ Password reset with signed tokens (20-minute expiration)
+- ✅ Email confirmation with signed tokens (2-day expiration)
+- ✅ Magic links with signed tokens (5-minute expiration)
 - ✅ Modern browser requirements
 - ✅ SQL injection protection
 - ✅ XSS protection
+- ✅ Secure cookie settings (httponly, same_site: lax)
 
 ## Browser Support
 
@@ -255,26 +261,18 @@ bin/kamal deploy
 
 Templatizer is an open-source project! We welcome contributions:
 
-### Adding New Templates
-
-1. **Create template directory**: `mkdir templates/your-template-name`
-2. **Add configuration**: Create `template.json` with metadata
-3. **Create script**: Build your template creation script
-4. **Test thoroughly**: Use our testing framework
-5. **Submit PR**: Follow our contribution guidelines
-
 ### Development
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/templatizer.git
+git clone https://github.com/discoposse/templatizer.git
 cd templatizer
 
 # Run tests
 ./scripts/run-tests.sh
 
 # Debug templates
-./scripts/debug-template.sh template-name detailed
+./scripts/debug-template.sh rails-modern detailed
 
 # Generate documentation
 ./scripts/generate-docs.sh
@@ -285,66 +283,25 @@ cd templatizer
 ```
 templatizer/
 ├── templates/           # Template definitions
-│   ├── rails-modern/    # Rails Modern template
-│   └── your-template/   # Your custom template
+│   └── rails-modern/    # Rails Modern template
 ├── scripts/             # Testing and utility scripts
 │   ├── test-template.sh # Template testing
 │   ├── debug-template.sh # Debugging tools
 │   └── run-tests.sh     # Test runner
-├── docs/               # Generated documentation
-├── examples/            # Usage examples
 └── .github/workflows/   # CI/CD pipelines
 ```
 
 ## 🔧 Troubleshooting
 
-### Common Issues & Solutions
-
-#### 1. Authentication Errors
-**Problem**: `NoMethodError: undefined method 'unauthenticated_access_only'`
-**Solution**: This has been fixed in the template. If you encounter this:
-```bash
-# Restart your Rails server
-# The template now properly defines this as a class method
-```
-
-#### 2. Routing Errors
-**Problem**: `ActionController::RoutingError: No route matches [GET] "/sign_up"`
-**Solution**: Use the correct routes:
-- Sign up form: `/sign_up/new` (not `/sign_up`)
-- Sign in form: `/session/new` (not `/session`)
-
-#### 3. Database Conflicts
-**Problem**: `PG::DuplicateTable: ERROR: relation "users" already exists`
-**Solution**: The template now includes smart conflict detection:
-- Automatically detects existing databases
-- Prompts for overwrite confirmation
-- Performs clean database reset when needed
-
-#### 4. Migration Errors
-**Problem**: `ActiveRecord::DuplicateMigrationNameError`
-**Solution**: Fixed in template - now uses proper migration handling:
-- Finds generated migrations automatically
-- Updates content without creating duplicates
-- Handles index creation intelligently
-
-#### 5. Tailwind CSS Issues
-**Problem**: `Specified input file ./app/assets/tailwind/application.css does not exist`
-**Solution**: Template now creates the required input file automatically
-
-### Getting Help
-
-1. **Check the logs**: Look at your Rails server output for specific errors
-2. **Test the sample app**: Run `./scripts/test-sample-app.sh` to verify functionality
-3. **Debug mode**: Use `./scripts/debug-template.sh rails-modern detailed` for detailed output
-4. **Restart server**: Many issues are resolved by restarting the Rails server
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues and solutions.
 
 ## 📚 Documentation
 
-- **[Templates](docs/TEMPLATES.md)**: Available templates
-- **[API](docs/API.md)**: Template development API
-- **[Troubleshooting](docs/TROUBLESHOOTING.md)**: Common issues and solutions
-- **[Contributing](CONTRIBUTING.md)**: Contribution guidelines
+- **[FEATURES.md](FEATURES.md)**: Complete feature list
+- **[QUICK_START.md](QUICK_START.md)**: Quick start guide
+- **[SETUP.md](SETUP.md)**: Detailed setup instructions
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)**: Common issues and solutions
+- **[CONTRIBUTING.md](CONTRIBUTING.md)**: Contribution guidelines
 
 ## 🧪 Testing
 
