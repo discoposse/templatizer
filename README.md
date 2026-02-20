@@ -35,7 +35,7 @@ This template creates a modern Rails 8.1 application with:
 - **Authentication System**: Complete user authentication with sessions, password reset, email confirmation, and magic links
 - **Modern UI**: Tailwind CSS with responsive design and beautiful components
 - **Hotwire**: Turbo and Stimulus for modern JavaScript interactions
-- **Database**: PostgreSQL with proper migrations
+- **Database**: PostgreSQL (default) or SQLite — choose when creating the app
 - **Security**: Secure password handling, CSRF protection, and modern browser requirements
 - **Admin Features**: Role-based access control
 - **PWA Ready**: Progressive Web App capabilities
@@ -49,18 +49,20 @@ This template creates a modern Rails 8.1 application with:
 # Navigate to templatizer directory
 cd templatizer
 
-# Use the Rails Modern template
+# Use the Rails Modern template (PostgreSQL by default)
 chmod +x templates/rails-modern/create_rails_app.sh
 ./templates/rails-modern/create_rails_app.sh myapp
+
+# Or create an app with SQLite
+./templates/rails-modern/create_rails_app.sh myapp sqlite
 
 # Navigate to your new app
 cd ../myapp
 
-# Install dependencies
+# Install dependencies (if not already done by the script)
 bundle install
-yarn install
 
-# Set up the database
+# Set up the database (script usually runs migrations; run if needed)
 bin/rails db:create
 bin/rails db:migrate
 
@@ -68,7 +70,7 @@ bin/rails db:migrate
 bin/dev
 ```
 
-Visit `http://localhost:3000` to see your new application!
+Visit `http://localhost:3000` to see your new application. In development, sent emails are available at `http://localhost:3000/letter_opener`.
 
 ### Testing Templates
 
@@ -134,7 +136,7 @@ app/
 ├── views/
 │   ├── layouts/
 │   │   ├── application.html.erb
-│   │   └── login.html.erb
+│   │   └── mailer.html.erb
 │   ├── home/
 │   ├── sessions/
 │   ├── sign_ups/
@@ -142,8 +144,7 @@ app/
 │   └── email_confirmations/
 ├── mailers/
 │   ├── application_mailer.rb
-│   ├── user_mailer.rb
-│   ├── passwords_mailer.rb
+│   ├── password_resets_mailer.rb
 │   └── email_confirmations_mailer.rb
 └── helpers/
     └── application_helper.rb
@@ -154,7 +155,9 @@ app/
 - `Gemfile` - All necessary gems including Rails 8.1, Tailwind, Hotwire
 - `config/routes.rb` - Complete routing setup with authentication routes
 - `config/application.rb` - Rails configuration
-- `config/database.yml` - PostgreSQL configuration
+- `config/database.yml` - PostgreSQL or SQLite (depending on template option)
+- `config/initializers/action_mailer.rb` - Mailer URL options and delivery (development: Letter Opener Web)
+- `config/initializers/cloudmailin.rb` - Optional production SMTP (when `CLOUDMAILIN_SMTP_URL` is set)
 - `config/tailwind.config.js` - Tailwind CSS configuration
 - `config/importmap.rb` - JavaScript import mapping
 
@@ -163,7 +166,7 @@ app/
 ### Required System Dependencies
 - Ruby 3.1+ (tested with 3.4.8)
 - Rails 8.1+
-- PostgreSQL 14+
+- **Database**: PostgreSQL 14+ (default) or SQLite 3 — pass `sqlite` as second argument for SQLite
 - Node.js 18+ (for Tailwind CSS)
 - Git
 
@@ -220,23 +223,21 @@ bin/brakeman
 
 ## Email Development
 
-In development, emails are automatically opened in your browser using Letter Opener Web:
+In development, emails are opened in the browser using Letter Opener Web. Mailer options (host, port, delivery method) are set in `config/initializers/action_mailer.rb` (not in environment files).
 
 ```bash
 # Visit the email viewer
 open http://localhost:3000/letter_opener
 ```
 
-All sent emails (password resets, confirmations, etc.) will appear here for easy testing.
+All sent emails (password resets, confirmations, etc.) appear here for easy testing.
 
 ## Deployment
 
-The template includes Kamal deployment configuration:
+The template does **not** include Kamal or deployment config by default. Deployment is optional and flexible:
 
-```bash
-# Deploy with Kamal
-bin/kamal deploy
-```
+- **Kamal (optional add-on)** — Deploy to your own VPS with Docker. See **[DEPLOYMENT.md](DEPLOYMENT.md)** for Kamal setup, dependencies, and step-by-step instructions.
+- **Other platforms** — Use Heroku, Render, Fly.io, Railway, or any host that supports Rails; set production database and `RAILS_MASTER_KEY` as required.
 
 ## Security Features
 
@@ -300,6 +301,7 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues and solutions.
 - **[FEATURES.md](FEATURES.md)**: Complete feature list
 - **[QUICK_START.md](QUICK_START.md)**: Quick start guide
 - **[SETUP.md](SETUP.md)**: Detailed setup instructions
+- **[DEPLOYMENT.md](DEPLOYMENT.md)**: Optional Kamal deployment and dependencies
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)**: Common issues and solutions
 - **[CONTRIBUTING.md](CONTRIBUTING.md)**: Contribution guidelines
 

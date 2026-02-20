@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Rails Modern App Template Creator
-# Usage: ./create_rails_app.sh <app_name>
+# Usage: ./create_rails_app.sh <app_name> [database]
+#   database: postgresql (default) or sqlite
 
 set -e
 
@@ -32,15 +33,23 @@ print_error() {
 # Check if app name is provided
 if [ $# -eq 0 ]; then
     print_error "Please provide an app name"
-    echo "Usage: $0 <app_name>"
+    echo "Usage: $0 <app_name> [database]"
+    echo "  database: postgresql (default) or sqlite"
     exit 1
 fi
 
 APP_NAME=$1
+DATABASE=${2:-postgresql}
 APP_NAME_LOWER=$(echo $APP_NAME | tr '[:upper:]' '[:lower:]')
 APP_NAME_CLASS=$(echo $APP_NAME | sed 's/\([a-z0-9]\)\([A-Z]\)/\1_\2/g' | tr '[:upper:]' '[:lower:]' | sed 's/^./\U&/')
 
-print_status "Creating Rails app: $APP_NAME"
+if [ "$DATABASE" = "sqlite" ]; then
+  DATABASE_RAILS="sqlite3"
+else
+  DATABASE_RAILS="postgresql"
+fi
+
+print_status "Creating Rails app: $APP_NAME (database: $DATABASE_RAILS)"
 
 # Define the target directory (parent directory)
 TARGET_DIR="../$APP_NAME_LOWER"
@@ -100,7 +109,7 @@ fi
 # Create Rails app with specific options in parent directory
 print_status "Generating Rails application in $TARGET_DIR..."
 rails new $TARGET_DIR \
-    --database=postgresql \
+    --database=$DATABASE_RAILS \
     --css=tailwind \
     --javascript=importmap \
     --skip-git \
@@ -1152,30 +1161,27 @@ if ENV['CLOUDMAILIN_SMTP_URL'].present?
 end
 EOF
 
-# Update development environment
-cat >> config/environments/development.rb << 'EOF'
+# Action Mailer config (must be in an initializer so config is in scope)
+cat > config/initializers/action_mailer.rb << 'EOF'
+# Be sure to restart your server when you modify this file.
 
-# Use Letter Opener to open emails in browser
-config.action_mailer.delivery_method = :letter_opener_web
+Rails.application.config.action_mailer.default_url_options = case Rails.env
+when "development"
+  { host: "localhost", port: 3000 }
+when "production"
+  { host: ENV.fetch("MAILER_HOST", "example.com"), protocol: "https" }
+else
+  {}
+end
 
-# Set localhost to be used by links generated in mailer templates.
-config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-EOF
+if Rails.env.development?
+  Rails.application.config.action_mailer.delivery_method = :letter_opener_web
+end
 
-# Update production environment
-cat >> config/environments/production.rb << 'EOF'
-
-# Set host to be used by links generated in mailer templates.
-# This should be set to your actual domain in production
-config.action_mailer.default_url_options = { 
-  host: ENV.fetch("MAILER_HOST", "example.com"),
-  protocol: "https"
-}
-
-# CloudMailIn SMTP configuration is handled in config/initializers/cloudmailin.rb
-# It automatically configures SMTP when CLOUDMAILIN_SMTP_URL is present
-# If CloudMailIn is not configured, emails will fail (which is expected)
-config.action_mailer.raise_delivery_errors = true
+if Rails.env.production?
+  # CloudMailIn SMTP is configured in config/initializers/cloudmailin.rb
+  Rails.application.config.action_mailer.raise_delivery_errors = true
+end
 EOF
 
 print_status "Updating generated migrations..."

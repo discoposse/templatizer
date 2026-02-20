@@ -27,7 +27,7 @@ This template includes a comprehensive set of features for modern Rails applicat
 ### Design System
 - **Tailwind CSS**: Utility-first CSS framework
 - **Responsive Design**: Mobile-first approach
-- **Modern Colors**: Indigo and purple gradient theme
+- **Modern Colors**: Black and gray gradient theme
 - **Typography**: Clean, readable fonts
 - **Spacing**: Consistent spacing system
 
@@ -67,8 +67,11 @@ This template includes a comprehensive set of features for modern Rails applicat
 
 ## 🗄️ Database Features
 
-### PostgreSQL Integration
-- **Modern Database**: PostgreSQL with full Rails support
+### Database Options
+- **PostgreSQL** (default): Full Rails support, migrations, indexes, production-ready.
+- **SQLite**: Optional; use second argument `sqlite` when running the template for a SQLite-based app.
+
+### Database Integration
 - **Migrations**: Version-controlled database changes
 - **Indexes**: Optimized database performance
 - **Constraints**: Data integrity enforcement
@@ -157,14 +160,15 @@ This template includes a comprehensive set of features for modern Rails applicat
 
 ### Production Features
 - **Environment Configuration**: Production settings
-- **Database Configuration**: Production database setup
+- **Database Configuration**: Production database setup (PostgreSQL or SQLite)
 - **Asset Compilation**: Production asset pipeline
 - **Security Headers**: Production security
+- **Mailer Config**: Centralized in `config/initializers/action_mailer.rb`; optional CloudMailIn for production SMTP
 
-### Deployment Options
-- **Kamal Deployment**: Modern deployment tool
-- **Docker Support**: Container deployment
-- **Environment Variables**: Configuration management
+### Deployment Options (Optional)
+- **Kamal**: Optional add-on for VPS deployment with Docker. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup and dependencies.
+- **Other platforms**: Heroku, Render, Fly.io, Railway, or any host; configure production DB and `RAILS_MASTER_KEY`.
+- **Environment Variables**: Configuration and secrets per environment
 - **Health Checks**: Application monitoring
 
 ## 🔧 Development Tools

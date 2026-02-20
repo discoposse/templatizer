@@ -9,7 +9,7 @@ Before running the template, ensure you have the following installed:
 ### Required Software
 - **Ruby 3.1+** - [Install Ruby](https://www.ruby-lang.org/en/downloads/)
 - **Rails 8.0+** - `gem install rails`
-- **PostgreSQL** - [Install PostgreSQL](https://www.postgresql.org/download/)
+- **Database** - [PostgreSQL](https://www.postgresql.org/download/) (default) or SQLite 3. Use the second argument `sqlite` when running the script for SQLite.
 - **Node.js 18+** - [Install Node.js](https://nodejs.org/) (for Tailwind CSS)
 - **Git** - [Install Git](https://git-scm.com/)
 
@@ -34,24 +34,28 @@ node --version
    ```bash
    # If using git
    git clone <repository-url>
-   cd templater
+   cd templatizer
    
-   # Or download and extract the templater folder
+   # Or download and extract the templatizer folder
    ```
 
 2. **Make the script executable**
    ```bash
-   chmod +x create_rails_app.sh
+   chmod +x templates/rails-modern/create_rails_app.sh
    ```
 
 3. **Create your Rails app**
    ```bash
-   ./create_rails_app.sh MyAwesomeApp
+   # PostgreSQL (default)
+   ./templates/rails-modern/create_rails_app.sh MyAwesomeApp
+
+   # Or SQLite
+   ./templates/rails-modern/create_rails_app.sh MyAwesomeApp sqlite
    ```
 
 4. **Start development**
    ```bash
-   cd myawesomeapp
+   cd ../myawesomeapp
    bin/dev
    ```
 
@@ -64,7 +68,7 @@ The `create_rails_app.sh` script performs the following steps:
 
 ### 1. Rails App Generation
 - Creates a new Rails 8 application
-- Configures PostgreSQL as the database
+- Configures PostgreSQL (default) or SQLite as the database (second argument: `sqlite`)
 - Sets up Tailwind CSS for styling
 - Configures Importmap for JavaScript
 - Skips unnecessary files (git, tests initially)
@@ -166,20 +170,14 @@ bin/rubocop -a
 
 ## Deployment
 
-### Using Kamal (Recommended)
-```bash
-# Configure Kamal
-bin/kamal init
+Deployment is **optional**. The template does not include Kamal by default.
 
-# Deploy
-bin/kamal deploy
-```
+### Optional: Kamal (VPS with Docker)
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for full Kamal setup, dependencies (Docker, registry, SSH), and step-by-step instructions. In short: add the Kamal gem, run `bin/rails kamal:install`, edit `config/deploy.yml` and secrets, then `kamal deploy`.
 
-### Manual Deployment
-1. Set up production database
-2. Configure environment variables
-3. Run migrations: `RAILS_ENV=production rails db:migrate`
-4. Start server: `RAILS_ENV=production rails server`
+### Other options
+- **Manual**: Set up production database, set `RAILS_MASTER_KEY` and env, run migrations, start the server.
+- **Heroku / Render / Fly.io / Railway**: Follow each platform’s Rails guide; ensure production DB and secrets are set.
 
 ## Troubleshooting
 

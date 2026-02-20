@@ -4,13 +4,18 @@ Get your modern Rails app up and running in minutes!
 
 ## 🚀 One-Command Setup
 
-```bash
-# Make executable and run
-chmod +x create_rails_app.sh
-./create_rails_app.sh MyApp
+From the **templatizer** repo, run the template from the `templates/rails-modern` directory (or ensure you're in the right place so the script can find the template files):
 
-# Navigate to your new app
-cd ../MyApp
+```bash
+# Make executable and run (PostgreSQL by default)
+chmod +x templates/rails-modern/create_rails_app.sh
+./templates/rails-modern/create_rails_app.sh MyApp
+
+# Or use SQLite
+./templates/rails-modern/create_rails_app.sh MyApp sqlite
+
+# Navigate to your new app (created in parent directory)
+cd ../myapp
 
 # Start the development server
 bin/dev
@@ -46,10 +51,9 @@ All features have been tested and are working correctly:
 - No build step required
 - Progressive enhancement
 
-✅ **PostgreSQL Database**
-- Secure data storage
-- Proper migrations
-- Optimized indexes
+✅ **Database (PostgreSQL or SQLite)**
+- PostgreSQL by default; use second argument `sqlite` for SQLite
+- Secure data storage, migrations, and indexes
 - Production ready
 
 ## 🎯 Next Steps
@@ -73,12 +77,13 @@ All features have been tested and are working correctly:
 - **[README.md](README.md)** - Complete overview
 - **[SETUP.md](SETUP.md)** - Detailed setup guide
 - **[FEATURES.md](FEATURES.md)** - Feature documentation
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Optional Kamal deployment
 
 ## 🛠️ Requirements
 
 - Ruby 3.1+
 - Rails 8.0+
-- PostgreSQL
+- PostgreSQL (default) or SQLite
 - Node.js 18+
 
 ## 🆘 Need Help?
