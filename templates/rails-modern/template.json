@@ -1,6 +1,7 @@
 {
+  "id": "rails-modern",
   "name": "Rails Modern App",
-  "description": "A modern Rails 8 application with authentication, Tailwind CSS, and Hotwire",
+  "description": "A modern Rails 8 application with authentication, Tailwind CSS, and Hotwire (default edition; shared generator core in templates/.shared/)",
   "version": "1.0.0",
   "author": "Templatizer Team",
   "framework": "rails",

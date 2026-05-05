@@ -53,8 +53,13 @@ cd templatizer
 chmod +x templates/rails-modern/create_rails_app.sh
 ./templates/rails-modern/create_rails_app.sh myapp
 
+# Or the Carbon edition (IBM Carbon–aligned UI; file-driven theme + render engine)
+chmod +x templates/rails-carbon/create_rails_app.sh
+./templates/rails-carbon/create_rails_app.sh myapp
+
 # Or create an app with SQLite
 ./templates/rails-modern/create_rails_app.sh myapp sqlite
+./templates/rails-carbon/create_rails_app.sh myapp sqlite
 
 # Navigate to your new app
 cd ../myapp
@@ -77,6 +82,7 @@ Visit `http://localhost:3000` to see your new application. In development, sent 
 ```bash
 # Test a specific template
 ./scripts/test-template.sh rails-modern
+./scripts/test-template.sh rails-carbon
 
 # Run all tests
 ./scripts/run-tests.sh
@@ -84,6 +90,13 @@ Visit `http://localhost:3000` to see your new application. In development, sent 
 # Debug a template
 ./scripts/debug-template.sh rails-modern detailed
 ```
+
+### Editions and theming
+
+- **`templates/registry.json`** lists available editions for a future in-repo or hosted theme picker.
+- **`templates/theme-guide.html`** is a static Carbon-styled summary you can open in a browser.
+- **Shared generator** logic lives in **`templates/.shared/create_rails_app.sh`**. Edition wrappers (`rails-modern`, `rails-carbon`) set `TEMPLATIZER_THEME` and `exec` that script.
+- **Carbon edition** installs UI from **`templates/rails-carbon/files`** via **`scripts/engine/render-tree.sh`**, which replaces `__APP_NAME__`, `__APP_NAME_LOWER__`, `__APP_NAME_CLASS__`, and `__APP_DISPLAY_NAME__` in every text file under `files/`.
 
 ## What Gets Created
 

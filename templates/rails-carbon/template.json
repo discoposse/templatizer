@@ -1,10 +1,16 @@
 {
-  "name": "Rails Modern App",
-  "description": "A modern Rails 8 application with authentication, Tailwind CSS, and Hotwire",
+  "id": "rails-carbon",
+  "name": "Rails Carbon Edition",
+  "description": "Rails 8 app with authentication and IBM Carbon Design System styling (IBM Plex, Gray 100 palette, glyph navigation). UI is generated from file templates via the Templatizer render engine.",
   "version": "1.0.0",
   "author": "Templatizer Team",
   "framework": "rails",
   "framework_version": "8.0",
+  "theme": {
+    "design_system": "carbon-11-aligned",
+    "engine": "scripts/engine/render-tree.sh",
+    "source_files": "templates/rails-carbon/files"
+  },
   "dependencies": {
     "ruby": ">= 3.1.0",
     "rails": ">= 8.0.0",
@@ -13,19 +19,16 @@
   },
   "features": [
     "authentication",
-    "tailwind-css",
+    "tailwind-css-v4",
     "hotwire",
     "postgresql",
-    "modern-ui",
-    "pwa-ready"
+    "carbon-ui",
+    "ibm-plex",
+    "file-driven-theme"
   ],
   "files": {
     "create_script": "create_rails_app.sh",
-    "config_files": [
-      "application.rb",
-      "database.yml",
-      "tailwind.config.js"
-    ]
+    "shared_core": "../.shared/create_rails_app.sh"
   },
   "test_commands": [
     "rails db:migrate",

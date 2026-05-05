@@ -63,8 +63,10 @@ run_test() {
 # 1. Validate template configurations
 print_status "📋 Validating template configurations..."
 for template_dir in templates/*/; do
-    if [ -d "$template_dir" ] && [ "$(basename "$template_dir")" != "*.json" ]; then
+    if [ -d "$template_dir" ]; then
         template_name=$(basename "$template_dir")
+        case "$template_name" in .*) continue ;; esac
+        [ "$template_name" = "_shared" ] && continue
         if [ -f "$template_dir/template.json" ]; then
             run_test "Template config: $template_name" "jq empty '$template_dir/template.json'"
         else
@@ -76,8 +78,10 @@ done
 # 2. Test template scripts
 print_status "🔧 Testing template scripts..."
 for template_dir in templates/*/; do
-    if [ -d "$template_dir" ] && [ "$(basename "$template_dir")" != "*.json" ]; then
+    if [ -d "$template_dir" ]; then
         template_name=$(basename "$template_dir")
+        case "$template_name" in .*) continue ;; esac
+        [ "$template_name" = "_shared" ] && continue
         script_file="$template_dir/create_rails_app.sh"
         if [ -f "$script_file" ]; then
             run_test "Script exists: $template_name" "test -f '$script_file'"
@@ -92,8 +96,10 @@ done
 if [ -z "$CI" ]; then
     print_status "🚀 Testing template execution..."
     for template_dir in templates/*/; do
-        if [ -d "$template_dir" ] && [ "$(basename "$template_dir")" != "*.json" ]; then
+        if [ -d "$template_dir" ]; then
             template_name=$(basename "$template_dir")
+            case "$template_name" in .*) continue ;; esac
+            [ "$template_name" = "_shared" ] && continue
             if [ -f "$template_dir/create_rails_app.sh" ]; then
                 print_status "Testing template: $template_name"
                 if ./scripts/test-template.sh "$template_name" "test_${template_name}_$(date +%s)"; then

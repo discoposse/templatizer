@@ -44,7 +44,13 @@ if [ $# -eq 0 ]; then
     echo "Usage: $0 <template_name> [debug_level]"
     echo "Debug levels: basic, detailed, verbose"
     echo "Available templates:"
-    ls templates/ | grep -v "\.json$" | sed 's/^/  - /'
+    for d in templates/*/; do
+      [ -d "$d" ] || continue
+      base="$(basename "$d")"
+      case "$base" in .*) continue ;; esac
+      [ "$base" = "_shared" ] && continue
+      echo "  - $base"
+    done
     exit 1
 fi
 

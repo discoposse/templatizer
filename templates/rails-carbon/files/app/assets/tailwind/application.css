@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --theme-bg: #f4f4f4;
+    --theme-text: #161616;
+    --theme-text-secondary: #525252;
+    --theme-border: #c6c6c6;
+    --theme-border-light: #e0e0e0;
+    --theme-link: #0f62fe;
+    --theme-link-hover: #0043ce;
+    --theme-input-bg: #ffffff;
+    --theme-input-border: #c6c6c6;
+    --theme-input-focus: #0f62fe;
+    --theme-input-ring: color-mix(in srgb, #0f62fe 18%, transparent);
+  }
+
+  html {
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+  }
+
+  body {
+    font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .theme-bg {
+    background-color: var(--theme-bg);
+  }
+
+  .theme-text {
+    color: var(--theme-text);
+  }
+
+  .theme-text-secondary {
+    color: var(--theme-text-secondary);
+  }
+
+  .theme-input {
+    display: block;
+    width: 100%;
+    border-radius: 0.125rem;
+    border: 1px solid var(--theme-input-border);
+    background: var(--theme-input-bg);
+    color: var(--theme-text);
+    padding: 0.58rem 0.75rem;
+    font-size: 0.92rem;
+    line-height: 1.3;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .theme-input::placeholder {
+    color: #8d8d8d;
+  }
+
+  .theme-input:focus {
+    outline: none;
+    border-color: var(--theme-input-focus);
+    box-shadow: 0 0 0 3px var(--theme-input-ring);
+  }
+
+  .theme-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-family: "IBM Plex Mono", "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--theme-text-secondary);
+  }
+
+  .carbon-card {
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    box-shadow: 0 1px 0 rgb(22 22 22 / 0.03);
+  }
+
+  .alert {
+    border-radius: 0.125rem;
+    border: 1px solid var(--theme-border-light);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .alert-error {
+    border-color: color-mix(in srgb, #ef4444 48%, var(--theme-border-light) 52%);
+    background: color-mix(in srgb, #ef4444 11%, #ffffff 89%);
+    color: #161616;
+  }
+
+  .alert-success {
+    border-color: color-mix(in srgb, #16a34a 45%, var(--theme-border-light) 55%);
+    background: color-mix(in srgb, #16a34a 10%, #ffffff 90%);
+    color: #161616;
+  }
+
+  .carbon-link {
+    color: var(--theme-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .carbon-link:hover {
+    color: var(--theme-link-hover);
+  }
+}
+
+@layer utilities {
+  .carbon-surface {
+    background:
+      radial-gradient(circle at top left, rgb(15 98 254 / 0.08), transparent 32%),
+      linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%);
+    color: #161616;
+  }
+}

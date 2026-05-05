@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="h-full" data-theme="light">
+  <head>
+    <title><%= content_for(:title) || "__APP_DISPLAY_NAME__" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/plex/plex-full.css">
+
+    <meta name="application-name" content="__APP_DISPLAY_NAME__">
+    <meta name="apple-mobile-web-app-title" content="__APP_DISPLAY_NAME__">
+    <meta name="theme-color" content="#f4f4f4">
+    <link rel="icon" type="image/svg+xml" href="<%= asset_path("app-icon.svg") %>">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "carbon_theme", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="h-full theme-bg theme-text flex flex-col" data-theme="light">
+    <header class="glyph-topbar">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-4 lg:flex-nowrap lg:px-10">
+        <div class="order-1 min-w-0">
+          <%= link_to root_path, class: "glyph-brand", aria: { label: "__APP_DISPLAY_NAME__" } do %>
+            <%= image_tag "app-icon.svg", alt: "__APP_DISPLAY_NAME__", class: "glyph-brand__logo", width: 40, height: 40 %>
+            <span class="glyph-brand__text">
+              <span class="glyph-brand__name"><%= app_display_name %></span>
+              <span class="glyph-brand__meta">Application</span>
+            </span>
+          <% end %>
+        </div>
+
+        <% unless on_authentication_page? %>
+          <div class="order-2 flex flex-wrap items-center justify-end gap-2 lg:order-3">
+            <% if authenticated? %>
+              <%= link_to "Home", root_path, class: glyph_button_classes(variant: :secondary) %>
+              <%= button_to "Sign out", session_path, method: :delete, form: { class: "inline-flex" }, class: glyph_button_classes(variant: :secondary) %>
+            <% else %>
+              <%= link_to "Sign in", new_session_path, class: glyph_button_classes(variant: :secondary) %>
+              <%= link_to "Sign up", sign_up_path, class: glyph_button_classes %>
+            <% end %>
+          </div>
+
+          <nav class="glyph-nav order-3 flex w-full flex-wrap justify-center lg:order-2 lg:w-auto lg:flex-1 lg:justify-center" aria-label="Primary">
+            <%= link_to "Home", root_path, class: "glyph-nav-link", data: { active: current_page?(root_path) } %>
+          </nav>
+        <% else %>
+          <div class="order-2 flex flex-wrap items-center justify-end gap-2 lg:order-3 lg:ml-auto">
+            <%= link_to "Sign in", new_session_path, class: glyph_button_classes(variant: :secondary) %>
+            <%= link_to "Sign up", sign_up_path, class: glyph_button_classes %>
+          </div>
+        <% end %>
+      </div>
+    </header>
+
+    <% flash.each do |type, message| %>
+      <% next if message.blank? %>
+      <% tone = type.to_s == "alert" ? "alert-error" : "alert-success" %>
+      <div class="mx-4 mt-4">
+        <div class="alert <%= tone %>" role="<%= type.to_s == "alert" ? "alert" : "status" %>">
+          <%= sanitize message.to_s, tags: %w[a], attributes: %w[href class] %>
+        </div>
+      </div>
+    <% end %>
+
+    <main id="main-content" class="flex-1">
+      <%= yield %>
+    </main>
+
+    <footer class="mt-auto border-t border-[#e0e0e0] bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-[#525252] sm:px-6 lg:px-8">
+        © <%= Date.current.year %> <%= app_display_name %>
+      </div>
+    </footer>
+  </body>
+</html>

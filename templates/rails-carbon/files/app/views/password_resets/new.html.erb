@@ -1,0 +1,24 @@
+<% content_for :title, "Reset password" %>
+
+<div class="carbon-surface flex min-h-full flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h1 class="text-center text-3xl font-semibold tracking-tight text-[#161616]">Reset password</h1>
+    <p class="mt-2 text-center text-sm text-[#525252]">
+      <%= link_to "Back to sign in", new_session_path, class: "carbon-link font-medium" %>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="carbon-card px-6 py-8 sm:px-8">
+      <%= form_with url: password_reset_path, local: true, class: "space-y-6" do |form| %>
+        <div>
+          <%= form.label :email_address, "Email address", class: "theme-label" %>
+          <%= form.email_field :email_address, required: true, autofocus: true, class: "theme-input", autocomplete: "email" %>
+        </div>
+        <div>
+          <%= form.submit "Send instructions", class: "#{glyph_button_classes} w-full justify-center" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

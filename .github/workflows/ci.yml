@@ -71,6 +71,10 @@ jobs:
     - name: Test Rails Modern template
       run: |
         ./scripts/test-template.sh rails-modern test_rails_modern_ci
+
+    - name: Test Rails Carbon template
+      run: |
+        ./scripts/test-template.sh rails-carbon test_rails_carbon_ci
     
     - name: Debug template (on failure)
       if: failure()

@@ -1,0 +1,28 @@
+{
+  "version": "1",
+  "description": "Machine-readable registry of Templatizer editions. Future theme picker UIs can load this file.",
+  "editions": [
+    {
+      "id": "rails-modern",
+      "name": "Rails Modern",
+      "path": "templates/rails-modern",
+      "create_script": "templates/rails-modern/create_rails_app.sh",
+      "template_json": "templates/rails-modern/template.json",
+      "design_system": "tailwind-default",
+      "ui_source": "inline-heredocs",
+      "default": true
+    },
+    {
+      "id": "rails-carbon",
+      "name": "Rails Carbon Edition",
+      "path": "templates/rails-carbon",
+      "create_script": "templates/rails-carbon/create_rails_app.sh",
+      "template_json": "templates/rails-carbon/template.json",
+      "design_system": "ibm-carbon-aligned",
+      "ui_source": "file-templates",
+      "render_engine": "scripts/engine/render-tree.sh",
+      "theme_files": "templates/rails-carbon/files",
+      "default": false
+    }
+  ]
+}
