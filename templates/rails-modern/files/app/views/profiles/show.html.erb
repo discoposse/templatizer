@@ -1,0 +1,106 @@
+<% content_for :title, "Profile" %>
+
+<div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+  <p class="text-sm font-medium uppercase tracking-wide text-indigo-600">Account</p>
+  <h1 class="mt-2 text-3xl font-semibold tracking-tight text-gray-900"><%= @user.full_name %></h1>
+  <p class="mt-2 text-sm text-gray-600"><%= @user.email_address %></p>
+  <% if @user.admin? %>
+    <p class="mt-2 text-xs font-semibold uppercase tracking-wide text-indigo-600">Admin</p>
+  <% end %>
+
+  <section class="mt-10 rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+    <h2 class="text-lg font-semibold text-gray-900">Your details</h2>
+    <%= form_with model: @user, url: profile_path, method: :patch, class: "mt-6 space-y-5" do |form| %>
+      <% if @profile_form && @user.errors.any? %>
+        <div class="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+          <ul class="list-disc space-y-1 pl-5">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <%= form.label :first_name, "First name", class: auth_label_class %>
+          <%= form.text_field :first_name, required: true, autocomplete: "given-name", class: auth_input_class %>
+        </div>
+        <div>
+          <%= form.label :last_name, "Last name", class: auth_label_class %>
+          <%= form.text_field :last_name, required: true, autocomplete: "family-name", class: auth_input_class %>
+        </div>
+      </div>
+      <div>
+        <p class="<%= auth_label_class %>">Email</p>
+        <p class="mt-1 text-sm text-gray-600"><%= @user.email_address %></p>
+        <p class="mt-1 text-xs text-gray-500">
+          <% if @user.email_confirmed? %>
+            Confirmed <%= @user.email_confirmed_at.to_fs(:long) %>
+          <% else %>
+            Not confirmed yet.
+          <% end %>
+        </p>
+      </div>
+      <%= form.submit "Save profile", class: "rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 hover:bg-gray-50" %>
+    <% end %>
+  </section>
+
+  <section class="mt-6 rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+    <h2 class="text-lg font-semibold text-gray-900">Password</h2>
+    <%= form_with url: profile_password_path, method: :patch, scope: :password_change, class: "mt-6 space-y-5" do |form| %>
+      <% if @password_form && @user.errors.any? %>
+        <div class="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+          <ul class="list-disc space-y-1 pl-5">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div>
+        <%= form.label :current_password, "Current password", class: auth_label_class %>
+        <%= form.password_field :current_password, required: true, autocomplete: "current-password", class: auth_input_class %>
+      </div>
+      <div>
+        <%= form.label :password, "New password", class: auth_label_class %>
+        <%= form.password_field :password, required: true, autocomplete: "new-password", class: auth_input_class %>
+        <p class="mt-1 text-xs text-gray-500">At least 8 characters. Other devices will be signed out.</p>
+      </div>
+      <div>
+        <%= form.label :password_confirmation, "Confirm new password", class: auth_label_class %>
+        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: auth_input_class %>
+      </div>
+      <%= form.submit "Update password", class: auth_button_class %>
+    <% end %>
+  </section>
+
+  <section class="mt-6 rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 class="text-lg font-semibold text-gray-900">Sessions</h2>
+      <% if @sessions.many? %>
+        <%= button_to "Sign out other devices", profile_sessions_path, method: :delete, class: "rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50" %>
+      <% end %>
+    </div>
+    <ul class="mt-4 divide-y divide-gray-100">
+      <% @sessions.each do |session_record| %>
+        <li class="flex flex-wrap items-center justify-between gap-3 py-4 text-sm">
+          <div>
+            <p class="font-medium text-gray-900"><%= session_record.user_agent.to_s.truncate(96).presence || "Unknown device" %></p>
+            <p class="mt-1 text-gray-500">
+              <%= session_record.ip_address.presence || "Unknown IP" %>
+              · <%= time_ago_in_words(session_record.created_at) %> ago
+              <% if session_record.id == Current.session&.id %>
+                · This device
+              <% end %>
+            </p>
+          </div>
+          <% if session_record.id == Current.session&.id %>
+            <%= button_to "Sign out", sign_out_path, method: :delete, class: "rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200" %>
+          <% else %>
+            <%= button_to "Revoke", profile_session_path(session_record), method: :delete, class: "rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+</div>

@@ -9,6 +9,9 @@
         <p class="mt-4 text-base leading-7 text-[#525252]">
           You are signed in to <strong><%= app_display_name %></strong>. Replace this view with your product home.
         </p>
+        <div class="mt-8">
+          <%= link_to "Your profile", profile_path, class: glyph_button_classes(variant: :secondary) %>
+        </div>
       </div>
     </div>
   </div>
@@ -36,7 +39,7 @@
         <div class="grid gap-6 md:grid-cols-3">
           <article class="carbon-card p-6">
             <h2 class="text-lg font-semibold tracking-tight text-[#161616]">Authentication</h2>
-            <p class="mt-3 text-sm leading-6 text-[#525252]">Sessions, sign up, password reset, and email confirmation are wired and ready to extend.</p>
+            <p class="mt-3 text-sm leading-6 text-[#525252]">Sign in, sign up, password reset, email confirmation, magic links, and an account profile are ready to extend.</p>
           </article>
           <article class="carbon-card p-6">
             <h2 class="text-lg font-semibold tracking-tight text-[#161616]">Tailwind v4</h2>

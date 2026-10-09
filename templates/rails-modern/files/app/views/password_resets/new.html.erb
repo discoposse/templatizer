@@ -1,0 +1,22 @@
+<% content_for :title, "Reset password" %>
+
+<div class="flex flex-col justify-center px-4 py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h1 class="text-center text-3xl font-semibold tracking-tight text-gray-900">Reset password</h1>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      <%= link_to "Back to sign in", new_session_path, class: auth_link_class %>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white px-6 py-8 shadow-sm ring-1 ring-gray-200 sm:rounded-xl sm:px-10">
+      <%= form_with url: password_resets_path, class: "space-y-6" do |form| %>
+        <div>
+          <%= form.label :email_address, "Email address", class: auth_label_class %>
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: auth_input_class %>
+        </div>
+        <%= form.submit "Send instructions", class: auth_button_class %>
+      <% end %>
+    </div>
+  </div>
+</div>

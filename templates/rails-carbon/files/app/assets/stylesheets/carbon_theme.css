@@ -141,6 +141,23 @@
   background: #f4f4f4;
 }
 
+.glyph-button--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: #161616;
+}
+
+.glyph-button--ghost:hover {
+  border-color: #e0e0e0;
+  background: #f4f4f4;
+}
+
+.alert a {
+  color: #0f62fe;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 @media (max-width: 1023px) {
   .glyph-nav {
     width: 100%;

@@ -16,7 +16,7 @@
     <%= csp_meta_tag %>
     <%= yield :head %>
 
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "carbon_theme", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -37,8 +37,8 @@
         <% unless on_authentication_page? %>
           <div class="order-2 flex flex-wrap items-center justify-end gap-2 lg:order-3">
             <% if authenticated? %>
-              <%= link_to "Home", root_path, class: glyph_button_classes(variant: :secondary) %>
-              <%= button_to "Sign out", session_path, method: :delete, form: { class: "inline-flex" }, class: glyph_button_classes(variant: :secondary) %>
+              <%= link_to "Profile", profile_path, class: glyph_button_classes(variant: :secondary) %>
+              <%= button_to "Sign out", sign_out_path, method: :delete, form: { class: "inline-flex" }, class: glyph_button_classes(variant: :secondary) %>
             <% else %>
               <%= link_to "Sign in", new_session_path, class: glyph_button_classes(variant: :secondary) %>
               <%= link_to "Sign up", sign_up_path, class: glyph_button_classes %>
@@ -47,6 +47,9 @@
 
           <nav class="glyph-nav order-3 flex w-full flex-wrap justify-center lg:order-2 lg:w-auto lg:flex-1 lg:justify-center" aria-label="Primary">
             <%= link_to "Home", root_path, class: "glyph-nav-link", data: { active: current_page?(root_path) } %>
+            <% if authenticated? %>
+              <%= link_to "Profile", profile_path, class: "glyph-nav-link", data: { active: current_page?(profile_path) } %>
+            <% end %>
           </nav>
         <% else %>
           <div class="order-2 flex flex-wrap items-center justify-end gap-2 lg:order-3 lg:ml-auto">
@@ -74,6 +77,10 @@
     <footer class="mt-auto border-t border-[#e0e0e0] bg-white">
       <div class="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-[#525252] sm:px-6 lg:px-8">
         © <%= Date.current.year %> <%= app_display_name %>
+        <% if Rails.env.development? %>
+          <span class="mx-2" aria-hidden="true">·</span>
+          <%= link_to "Letter Opener", "/letter_opener", class: "carbon-link" %>
+        <% end %>
       </div>
     </footer>
   </body>

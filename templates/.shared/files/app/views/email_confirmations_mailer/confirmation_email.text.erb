@@ -1,0 +1,8 @@
+Confirm your email for __APP_DISPLAY_NAME__
+
+Hello <%= @user.first_name %>,
+
+Confirm your account within 2 days:
+<%= email_confirmation_url(@token) %>
+
+If you did not sign up, you can ignore this email.

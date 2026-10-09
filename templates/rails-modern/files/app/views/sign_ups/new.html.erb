@@ -1,0 +1,56 @@
+<% content_for :title, "Sign up" %>
+
+<div class="flex flex-col justify-center px-4 py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h1 class="text-center text-3xl font-semibold tracking-tight text-gray-900">Create account</h1>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      or
+      <%= link_to "sign in", new_session_path, class: auth_link_class %>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white px-6 py-8 shadow-sm ring-1 ring-gray-200 sm:rounded-xl sm:px-10">
+      <%= form_with model: @user, url: sign_up_path, class: "space-y-6" do |form| %>
+        <% if @user.errors.any? %>
+          <div class="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+            <ul class="list-disc space-y-1 pl-5">
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <%= form.label :first_name, "First name", class: auth_label_class %>
+            <%= form.text_field :first_name, required: true, autofocus: true, autocomplete: "given-name", class: auth_input_class %>
+          </div>
+          <div>
+            <%= form.label :last_name, "Last name", class: auth_label_class %>
+            <%= form.text_field :last_name, required: true, autocomplete: "family-name", class: auth_input_class %>
+          </div>
+        </div>
+
+        <div>
+          <%= form.label :email_address, "Email address", class: auth_label_class %>
+          <%= form.email_field :email_address, required: true, autocomplete: "email", class: auth_input_class %>
+        </div>
+
+        <div>
+          <%= form.label :password, "Password", class: auth_label_class %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", class: auth_input_class %>
+          <p class="mt-1 text-xs text-gray-500">At least 8 characters.</p>
+        </div>
+
+        <div>
+          <%= form.label :password_confirmation, "Confirm password", class: auth_label_class %>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", class: auth_input_class %>
+        </div>
+
+        <%= form.submit "Create account", class: auth_button_class %>
+      <% end %>
+    </div>
+  </div>
+</div>
