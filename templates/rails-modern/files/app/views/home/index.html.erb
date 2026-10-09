@@ -1,0 +1,27 @@
+<% if authenticated? %>
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <p class="text-sm font-medium uppercase tracking-wide text-indigo-600">Dashboard</p>
+    <h1 class="mt-3 text-3xl font-semibold tracking-tight text-gray-900">
+      Welcome back<% if Current.user.first_name.present? %>, <%= Current.user.first_name %><% end %>.
+    </h1>
+    <p class="mt-4 text-base leading-7 text-gray-600">
+      You are signed in to <%= app_display_name %>. Replace this page with your product home.
+    </p>
+    <div class="mt-8">
+      <%= link_to "Your profile", profile_path, class: "inline-flex rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+    </div>
+  </div>
+<% else %>
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+    <div class="max-w-3xl">
+      <h1 class="text-5xl font-semibold tracking-tight text-gray-900"><%= app_display_name %></h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600">
+        A Rails application from Templatizer with sign-in, email confirmation, password reset, magic links, and an account profile.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <%= link_to "Create account", new_sign_up_path, class: "rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+        <%= link_to "Sign in", new_session_path, class: "rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 hover:bg-gray-50" %>
+      </div>
+    </div>
+  </div>
+<% end %>

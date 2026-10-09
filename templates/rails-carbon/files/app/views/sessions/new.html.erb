@@ -20,7 +20,7 @@
         <div>
           <div class="flex items-center justify-between gap-2">
             <%= form.label :password, "Password", class: "theme-label" %>
-            <%= link_to "Forgot password?", password_reset_path, class: "text-xs font-medium text-[#0f62fe] hover:text-[#0043ce]" %>
+            <%= link_to "Forgot password?", new_password_reset_path, class: "text-xs font-medium text-[#0f62fe] hover:text-[#0043ce]" %>
           </div>
           <%= form.password_field :password, required: true, class: "theme-input", autocomplete: "current-password" %>
         </div>
@@ -29,6 +29,12 @@
           <%= form.submit "Sign in", class: "#{glyph_button_classes} w-full justify-center" %>
         </div>
       <% end %>
+
+      <p class="mt-6 text-center text-sm text-[#525252]">
+        <%= link_to "Email me a sign-in link", new_magic_link_path, class: "carbon-link" %>
+        <span class="mx-1" aria-hidden="true">·</span>
+        <%= link_to "Resend confirmation", new_email_confirmation_path, class: "carbon-link" %>
+      </p>
     </div>
   </div>
 </div>

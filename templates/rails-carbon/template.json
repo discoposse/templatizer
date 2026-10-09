@@ -5,15 +5,15 @@
   "version": "1.0.0",
   "author": "Templatizer Team",
   "framework": "rails",
-  "framework_version": "8.0",
+  "framework_version": "8.1",
   "theme": {
     "design_system": "carbon-11-aligned",
     "engine": "scripts/engine/render-tree.sh",
     "source_files": "templates/rails-carbon/files"
   },
   "dependencies": {
-    "ruby": ">= 3.1.0",
-    "rails": ">= 8.0.0",
+    "ruby": ">= 3.2.0",
+    "rails": ">= 8.1.4",
     "postgresql": ">= 14.0",
     "node": ">= 18.0"
   },
